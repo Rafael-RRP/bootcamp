@@ -17,6 +17,6 @@ jpa:
             ddl-auto: none
 
 application:
-  description: Projeto criado para o bootcamp DIO - SANTANDER
+  description: Projeto criado para o bootcamp DIO - SANTANDER / Backend
 
 
