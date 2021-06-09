@@ -2,12 +2,18 @@ package com.project.bootcamp.controller;
 
 import com.project.bootcamp.model.dto.StockDTO;
 import com.project.bootcamp.service.StockService;
+import com.sun.org.apache.bcel.internal.generic.Select;
+import org.omg.CORBA.IDLTypeOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
+import javax.xml.ws.Response;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -28,25 +34,25 @@ public class StockController {
         return ResponseEntity.ok(service.update(dto));
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StockDTO> delete(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(service.delete(id));
-    }
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StockDTO>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(service.finAll());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StockDTO> findById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<StockDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping(value = "/today", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<StockDTO>> findByCurrentDate() {
-        return ResponseEntity.ok(service.findByCurrentDate());
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StockDTO> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(service.delete(id));
     }
 
+    @GetMapping(value = "/today", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StockDTO>> findByToday() {
+        return ResponseEntity.ok(service.findByToDay());
+
+    }
 
 }
