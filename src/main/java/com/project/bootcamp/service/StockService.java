@@ -9,38 +9,26 @@ import com.project.bootcamp.repository.StockRepository;
 import com.project.bootcamp.util.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StockService {
 
+    @Autowired
+    private StockMapper mapper;
 
     @Autowired
     private StockRepository repository;
 
-    @Autowired
-    private StockMapper mapper;
-
     @Transactional
     public StockDTO save(StockDTO dto) {
-        Optional<Stock> optionalStock = repository.findByNameAndDate(dto.getName(), dto.getDate());
-        if(optionalStock.isPresent()){
-            throw new BusinessException(MessageUtils.STOCK_ALREADY_EXISTS);
-        }
-        Stock stock = mapper.toEntity(dto);
-        repository.save(stock);
-        return mapper.toDto(stock);
-
-    }
-    @Transactional
-    public StockDTO update(StockDTO dto) {
-        Optional<Stock> optionalStock = repository.findByNStockUpdate(dto.getName(), dto.getDate(), dto.getId());
-        if (optionalStock.isPresent()) {
-            throw new BusinessException(MessageUtils.STOCK_ALREADY_EXISTS);
+        Optional<Stock> optionalEntity = repository.findByNameAndDate(dto.getName(), dto.getDate());
+        if (optionalEntity.isPresent()) {
+            throw new BusinessException(MessageUtils.ACTIVE_ALREADY_EXISTS);
         }
         Stock active = mapper.toEntity(dto);
         repository.save(active);
@@ -48,23 +36,43 @@ public class StockService {
     }
 
     @Transactional
-        public StockDTO delete(Long id) {
-        StockDTO dto = this.findById(id);
-            repository.deleteById(dto.getId());
-            return dto;
+    public StockDTO update(StockDTO dto) {
+        Optional<Stock> optionalEntity = repository.findByName(dto.getName(), dto.getId(), dto.getDate());
+        if (optionalEntity.isPresent()) {
+            throw new BusinessException(MessageUtils.ACTIVE_ALREADY_EXISTS);
+        }
+        Stock active = mapper.toEntity(dto);
+        repository.save(active);
+        return mapper.toDto(active);
     }
-    @Transactional(readOnly = true)
-    public List<StockDTO> finAll() {
-        return mapper.toDto(repository.findAll());
+
+    @Transactional
+    public StockDTO delete(Long id) {
+        StockDTO activeDTO = findById(id);
+        repository.deleteById(activeDTO.getId());
+        return activeDTO;
     }
-    @Transactional(readOnly = true)
+
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public List<StockDTO> findAll() {
+        List<Stock> list = repository.findAll();
+        if (list.isEmpty()) {
+            throw new NotFoundException();
+        }
+        return mapper.toDto(list);
+    }
+
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public StockDTO findById(Long id) {
-        return repository.findById(id).map(mapper::toDto).orElseThrow(NotFoundException::new);
-    }
-    @Transactional(readOnly = true)
-    public List<StockDTO> findByToDay() {
-    return repository.findByToDay(LocalDate.now()).map(mapper::toDto).orElseThrow(NotFoundException::new);
-
-    }
+        return repository.findById(id)
+                .map(mapper::toDto)
+                .orElseThrow(NotFoundException::new);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public List<StockDTO> findByCurrentDate() {
+        return repository.findByCurrentDate()
+                .map(mapper::toDto)
+                .orElseThrow(NotFoundException::new);
+    }
+}
