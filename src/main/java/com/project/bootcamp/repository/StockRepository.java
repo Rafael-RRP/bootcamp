@@ -23,10 +23,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     @Query("SELECT stock " +
             "FROM Stock stock " +
             "WHERE stock.date = :date ")
-     Optional<List<Stock>> findByToDay(LocalDate date);
+    Optional<List<Stock>> findByToDay(LocalDate date);
 
-
-    Optional<Stock> findByName(String name, Long id, LocalDate date);
-
-    Optional<Object> findByCurrentDate();
 }
