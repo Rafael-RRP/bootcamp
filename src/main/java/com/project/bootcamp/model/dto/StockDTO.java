@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class StockDTO {
+    public StockDTO() {
+        System.out.println("Construtor de StockDTO executado");
+    }
 
     private Long id;
 
