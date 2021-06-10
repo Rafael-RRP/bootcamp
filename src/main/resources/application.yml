@@ -1,22 +1,22 @@
-server:
+ server:
   port: 8080
   servlet:
     context-path: /bootcamp
 
-spring:
+  spring:
     datasource:
         driver-class-name: org.postgresql.Driver
         url: postgres://rydjowkkwcswce:d2fadd1f1209709b382eee9c2ec5cc30b382e983e2a97dce741f68e2248b8687@ec2-3-215-57-87.compute-1.amazonaws.com:5432/dd09kafuu28uf
         username: rydjowkkwcswce
         password: d2fadd1f1209709b382eee9c2ec5cc30b382e983e2a97dce741f68e2248b8687
-jpa:
-          show-sql: true
-          database-platform: org.hibernate.dialect.PostgreSQLDialect
-          generate-ddl: true
-          hibernate:
+    jpa:
+        show-sql: true
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        generate-ddl: true
+        hibernate:
             ddl-auto: none
 
-application:
-  description: Projeto criado para o bootcamp DIO - SANTANDER / Backend 2.0
+  application:
+    description: Projeto criado para o bootcamp DIO - SANTANDER / Backend
 
 
