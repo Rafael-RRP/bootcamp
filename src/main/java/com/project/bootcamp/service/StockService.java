@@ -19,7 +19,6 @@ import java.util.Optional;
 @Service
 public class StockService {
 
-
     @Autowired
     private StockRepository repository;
 
@@ -39,7 +38,7 @@ public class StockService {
     }
     @Transactional
     public StockDTO update(StockDTO dto) {
-        Optional<Stock> optionalStock = repository.findByNStockUpdate(dto.getName(), dto.getDate(), dto.getId());
+        Optional<Stock> optionalStock = repository.findByStockUpdate(dto.getName(), dto.getDate(), dto.getId());
         if (optionalStock.isPresent()) {
             throw new BusinessException(MessageUtils.STOCK_ALREADY_EXISTS);
         }
