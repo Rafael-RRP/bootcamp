@@ -30,8 +30,8 @@ public class StockMapper {
         return dto;
 
     }
-    public List<StockDTO> toDto(List<Stock> list) {
-        return list.stream().map(this::toDto).collect(Collectors.toList());
+    public List<StockDTO> toDto(List<Stock> listStock) {
+        return listStock.stream().map(this::toDto).collect(Collectors.toList());
     }
 
 }
